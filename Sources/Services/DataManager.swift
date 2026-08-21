@@ -15,10 +15,6 @@ class DataManager {
         "\(backupFileBaseName) - \(sanitizedDeviceName).\(backupFileExtension)"
     }
 
-    private var legacyBackupFileName: String {
-        "\(backupFileBaseName).\(backupFileExtension)"
-    }
-
     private var sanitizedDeviceName: String {
         let rawDeviceName = Host.current().localizedName ?? ProcessInfo.processInfo.hostName
         return sanitizeFileNameComponent(rawDeviceName)
@@ -31,16 +27,6 @@ class DataManager {
         return cleaned.isEmpty ? "Unknown Device" : cleaned
     }
 
-    private func isBackupFile(name: String) -> Bool {
-        if name == legacyBackupFileName {
-            return true
-        }
-
-        let expectedPrefix = "\(backupFileBaseName) - "
-        let expectedSuffix = ".\(backupFileExtension)"
-        return name.hasPrefix(expectedPrefix) && name.hasSuffix(expectedSuffix)
-    }
-    
     private var dataFileURL: URL {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let appFolder = appSupport.appendingPathComponent("My Launchpad", isDirectory: true)
@@ -201,108 +187,4 @@ class DataManager {
         }
     }
     
-    /// Cloud backup info for display
-    struct CloudBackupInfo {
-        let source: String  // "iCloud" or "OneDrive"
-        let deviceName: String
-        let url: URL
-        let data: LauncherData
-        let modificationDate: Date
-        let groupCount: Int
-    }
-
-    private func deviceName(fromBackupFileName fileName: String) -> String {
-        if fileName == legacyBackupFileName {
-            return "Unknown Device"
-        }
-
-        let prefix = "\(backupFileBaseName) - "
-        let suffix = ".\(backupFileExtension)"
-        guard fileName.hasPrefix(prefix), fileName.hasSuffix(suffix) else {
-            return "Unknown Device"
-        }
-
-        let startIndex = fileName.index(fileName.startIndex, offsetBy: prefix.count)
-        let endIndex = fileName.index(fileName.endIndex, offsetBy: -suffix.count)
-        let extracted = String(fileName[startIndex..<endIndex]).trimmingCharacters(in: .whitespacesAndNewlines)
-        return extracted.isEmpty ? "Unknown Device" : extracted
-    }
-    
-    /// Check for available cloud backups
-    func discoverCloudBackups() -> [CloudBackupInfo] {
-        var backups: [CloudBackupInfo] = []
-        let decoder = JSONDecoder()
-        let fileManager = FileManager.default
-
-        func appendBackups(in directoryURL: URL, source: String) {
-            guard let fileURLs = try? fileManager.contentsOfDirectory(
-                at: directoryURL,
-                includingPropertiesForKeys: [.nameKey, .isRegularFileKey, .contentModificationDateKey],
-                options: [.skipsHiddenFiles]
-            ) else {
-                return
-            }
-
-            for fileURL in fileURLs {
-                let fileName = fileURL.lastPathComponent
-                guard isBackupFile(name: fileName) else { continue }
-                let deviceName = deviceName(fromBackupFileName: fileName)
-
-                if let data = try? Data(contentsOf: fileURL),
-                   let launcherData = try? decoder.decode(LauncherData.self, from: data),
-                   let attrs = try? fileManager.attributesOfItem(atPath: fileURL.path),
-                   let modDate = attrs[.modificationDate] as? Date {
-                    backups.append(CloudBackupInfo(
-                        source: source,
-                        deviceName: deviceName,
-                        url: fileURL,
-                        data: launcherData,
-                        modificationDate: modDate,
-                        groupCount: launcherData.groups.count
-                    ))
-                }
-            }
-        }
-
-        // Check iCloud backups from all devices
-        if let iCloudDirectoryURL = iCloudBackupDirectoryURL {
-            appendBackups(in: iCloudDirectoryURL, source: "iCloud")
-        }
-
-        // Check OneDrive backups from all devices
-        if let oneDriveDirectoryURL = oneDriveBackupDirectoryURL {
-            appendBackups(in: oneDriveDirectoryURL, source: "OneDrive")
-        }
-
-        backups.sort { $0.modificationDate > $1.modificationDate }
-        
-        return backups
-    }
-    
-    /// Load data from a specific cloud backup
-    func loadFromCloudBackup(_ backup: CloudBackupInfo) -> LauncherData? {
-        return backup.data
-    }
-    
-    /// Compare local data with cloud backup to detect differences
-    func hasSignificantDifferences(local: LauncherData?, cloud: LauncherData) -> Bool {
-        guard let local = local else {
-            // No local data, cloud has data - significant difference
-            return cloud.groups.count > 0
-        }
-        
-        // Compare group counts
-        if local.groups.count != cloud.groups.count {
-            return true
-        }
-        
-        // Compare group names
-        let localGroupNames = Set(local.groups.map { $0.name })
-        let cloudGroupNames = Set(cloud.groups.map { $0.name })
-        if localGroupNames != cloudGroupNames {
-            return true
-        }
-        
-        return false
-    }
 }

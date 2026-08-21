@@ -2,7 +2,7 @@
 
 This file contains the actual prompts used during development of My Launchpad.
 
-## Summary — 18 Sessions, 206 Prompts
+## Summary — 19 Sessions, 208 Prompts
 
 | Session | Date | Prompts |
 |---------|------|---------|
@@ -24,6 +24,7 @@ This file contains the actual prompts used during development of My Launchpad.
 | Launch at Login & Project Cleanup (v1.6.0) | February 22, 2026 | 7 |
 | Resizable Group Tiles & Drag-Drop Fix (v1.7.0) | March 2, 2026 | 14 |
 | Standalone App Pinning & Edit Mode Buttons (v1.8.0) | March 3, 2026 | 10 |
+| Remove Automatic Cloud Restore Prompt (v1.8.4) | August 20, 2026 | 2 |
 
 ---
 
@@ -1339,6 +1340,20 @@ If updating markdown is part of the instructions for send it, why do you keep mi
 ### Prompt 10: Check Chat and Prompt History
 ```
 Has chat history and prompt history also been updated per the instructions?
+```
+
+---
+
+## Session: August 20, 2026 - Remove Automatic Cloud Restore Prompt (v1.8.4)
+
+### Prompt 1: Remove Restore Prompt
+```
+I launched the app or open the app, and it asks which backup I want to restore, I should never be prompted to restore a backup. That functionality is only there if I want to manually restore from settings. It should never appear as a pop-up. Please remove this feature and update all documentation and follow the standard testing build documentation, update the repo
+```
+
+### Prompt 2: Send It
+```
+Please run send it
 ```
 
 ---

@@ -54,15 +54,10 @@ class LauncherViewModel: ObservableObject {
     private let dataManager = DataManager.shared
     private var cancellables = Set<AnyCancellable>()
     
-    /// Cloud backup prompt state
-    @Published var showCloudBackupPrompt: Bool = false
-    @Published var availableCloudBackups: [DataManager.CloudBackupInfo] = []
-    
     init() {
         loadData()
         reconcileLaunchAtLoginRegistration()
         setupFolderMonitoring()
-        checkForCloudBackups()
     }
 
     /// Apply the user's launch-at-login preference through ServiceManagement.
@@ -97,79 +92,6 @@ class LauncherViewModel: ObservableObject {
                 self?.refreshAppsInBackground()
             }
             .store(in: &cancellables)
-    }
-    
-    /// Check for cloud backups on startup and prompt if different
-    private func checkForCloudBackups() {
-        let cloudBackups = dataManager.discoverCloudBackups()
-        
-        guard !cloudBackups.isEmpty else { return }
-        
-        // Get local data for comparison
-        let localData = dataManager.load()
-        
-        // Check if any cloud backup has significant differences
-        for backup in cloudBackups {
-            if dataManager.hasSignificantDifferences(local: localData, cloud: backup.data) {
-                availableCloudBackups = cloudBackups
-                showCloudBackupPrompt = true
-                print("☁️ Found cloud backup from \(backup.source) with \(backup.groupCount) groups")
-                break
-            }
-        }
-    }
-    
-    /// Import settings from a cloud backup
-    func importFromCloudBackup(_ backup: DataManager.CloudBackupInfo) {
-        guard let cloudData = dataManager.loadFromCloudBackup(backup) else { return }
-        
-        // Merge cloud data with fresh app scan
-        let freshApps = AppScanner.scanApplications()
-        let cloudAppPaths = Set(cloudData.allApps.map { $0.path })
-        
-        // Keep cloud apps that still exist locally
-        var validApps = cloudData.allApps.filter { AppScanner.appExists($0) }
-        let validAppIds = Set(validApps.map { $0.id })
-        
-        // Add new local apps not in cloud data
-        let newApps = freshApps.filter { !cloudAppPaths.contains($0.path) }
-        validApps.append(contentsOf: newApps)
-        
-        self.allApps = validApps
-        
-        // Update groups - remove invalid app IDs
-        self.groups = cloudData.groups.map { group in
-            var updatedGroup = group
-            updatedGroup.appIds = group.appIds.filter { 
-                AppGroup.isVoid($0) || validAppIds.contains($0) 
-            }
-            return updatedGroup
-        }
-        
-        // Update ungrouped
-        var ungrouped = cloudData.ungroupedAppIds.filter { validAppIds.contains($0) }
-        ungrouped.append(contentsOf: newApps.map { $0.id })
-        self.ungroupedAppIds = ungrouped
-        
-        // Restore settings
-        if let scale = cloudData.groupTileScale { self.groupTileScale = scale }
-        if let launchAtLogin = cloudData.launchAtLoginEnabled { self.launchAtLoginEnabled = launchAtLogin }
-        if let hide = cloudData.hideOnLaunch { self.hideOnLaunch = hide }
-        if let hideFocus = cloudData.hideOnFocusLost { self.hideOnFocusLost = hideFocus }
-        if let width = cloudData.windowWidth { self.windowWidth = width }
-        if let height = cloudData.windowHeight { self.windowHeight = height }
-        if let iCloud = cloudData.backupToICloud { self.backupToICloud = iCloud }
-        if let oneDrive = cloudData.backupToOneDrive { self.backupToOneDrive = oneDrive }
-        
-        showCloudBackupPrompt = false
-        saveData()
-        
-        print("✅ Imported settings from \(backup.source)")
-    }
-    
-    /// Dismiss cloud backup prompt and keep local settings
-    func dismissCloudBackupPrompt() {
-        showCloudBackupPrompt = false
     }
     
     /// Refresh apps when folder changes detected

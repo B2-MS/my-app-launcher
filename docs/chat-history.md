@@ -19,6 +19,29 @@ When making changes to My Launchpad, document the session here with:
 
 ---
 
+## Session: Remove Automatic Cloud Restore Prompt (v1.8.4)
+**Date:** August 20, 2026
+
+### Prompts
+1. Reported that on launch the app prompts which backup to restore, and requested removing this feature so restore is manual-only from Settings, updating all documentation, following the standard testing build workflow, and updating the repo.
+2. Requested running send-it to build, verify, and push.
+
+### Outcomes
+- Removed the automatic cloud backup restore prompt shown on launch.
+- Removed launch-time cloud discovery and restore APIs (`checkForCloudBackups`, `discoverCloudBackups`, `importFromCloudBackup`, `dismissCloudBackupPrompt`, `CloudBackupInfo`, `hasSignificantDifferences`).
+- Kept cloud backup saving (iCloud/OneDrive toggles) and manual file Import intact.
+- Updated the User Guide cloud sync section to describe manual restore via Import.
+- Bumped version to 1.8.4 and updated README, RELEASE_NOTES, User Guide, and test cases (TC-024).
+
+### Files Modified
+- `Sources/ViewModels/LauncherViewModel.swift` — Removed cloud restore prompt state and methods.
+- `Sources/Views/ContentView.swift` — Removed restore prompt sheet and helpers.
+- `Sources/Services/DataManager.swift` — Removed cloud discovery/restore APIs.
+- `Resources/Info.plist` — Version 1.8.4, build 14.
+- `README.md`, `RELEASE_NOTES.md`, `docs/My Launchpad User Guide.md`, `docs/test-cases.md` — Documentation updates.
+
+---
+
 ## Session: Release Automation and Multi-Screen Launcher Updates (v1.8.2)
 **Date:** July 10, 2026
 

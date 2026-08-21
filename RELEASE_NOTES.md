@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 1.8.4 (August 2026)
+
+### Changes
+
+#### Removed Automatic Cloud Restore Prompt
+- **No more startup restore pop-up** - My Launchpad no longer scans cloud storage on launch or prompts you to restore a different configuration
+- **Restore is now manual only** - To restore cloud settings, use **Import** in Settings and select a backup file from your iCloud or OneDrive folder
+- **Cloud backup still automatic** - Saving settings to iCloud/OneDrive continues to work when the toggles are enabled
+
+---
+
 ## Version 1.8.3 (July 2026)
 
 ### Improvements

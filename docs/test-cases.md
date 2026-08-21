@@ -24,6 +24,24 @@ This file documents test cases for each feature. Tests are written when features
 
 ---
 
+## Version 1.8.4 Tests
+
+### TC-024: No Automatic Cloud Restore Prompt on Launch
+**Feature:** Removal of automatic cloud backup restore prompt
+**Added:** v1.8.4
+**Status:** ✅ Pass
+
+**Steps:**
+1. Enable iCloud or OneDrive backup and make a change so a cloud backup file exists
+2. On a Mac with different local settings, launch My Launchpad
+3. Observe startup behavior
+
+**Expected:** The app launches directly with no "Cloud Settings Found" pop-up; restoring cloud settings is only possible manually via Settings → Import
+**Actual:** App launches directly to the launcher with no restore pop-up. The launch-time discovery/prompt code was removed entirely, so the prompt cannot appear. Manual Import remains available in Settings.
+**Tested:** August 20, 2026
+
+---
+
 ## Version 1.8.1 Tests
 
 ### TC-023: Group Popup Animation Smoothness
