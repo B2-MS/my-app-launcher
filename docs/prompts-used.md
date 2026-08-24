@@ -2,7 +2,7 @@
 
 This file contains the actual prompts used during development of My Launchpad.
 
-## Summary — 19 Sessions, 208 Prompts
+## Summary — 20 Sessions, 211 Prompts
 
 | Session | Date | Prompts |
 |---------|------|---------|
@@ -25,6 +25,7 @@ This file contains the actual prompts used during development of My Launchpad.
 | Resizable Group Tiles & Drag-Drop Fix (v1.7.0) | March 2, 2026 | 14 |
 | Standalone App Pinning & Edit Mode Buttons (v1.8.0) | March 3, 2026 | 10 |
 | Remove Automatic Cloud Restore Prompt (v1.8.4) | August 20, 2026 | 2 |
+| Date-Prefixed Backup Filenames, Rebuild, and Repo Sync (v1.8.4) | August 23-24, 2026 | 3 |
 
 ---
 
@@ -1354,6 +1355,27 @@ I launched the app or open the app, and it asks which backup I want to restore, 
 ### Prompt 2: Send It
 ```
 Please run send it
+```
+
+---
+
+## Session: August 23-24, 2026 - Date-Prefixed Backup Filenames, Rebuild, and Repo Sync (v1.8.4)
+
+### Prompt 1: Local Reinstall and Launch
+```
+Please remove the local installation of my launchpad and refresh with the latest release and run it on the local machine
+```
+
+### Prompt 2: Confirm Latest Remote Build
+```
+Are you sure you're on the latest build you've pulled everything from the GitHub repo?
+```
+
+### Prompt 3: Backup Format, Full Testing, Docs, Builds, and Push
+```
+Please update the backup file format to include the date at the beginning of the file, in this format "YYMMDD - "
+
+Then run complete testing, update all of the documentation per the instructions, redo the builds, and then push to GitHub per our instructions
 ```
 
 ---

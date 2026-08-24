@@ -12,7 +12,14 @@ class DataManager {
     private let backupFileExtension = "json"
 
     private var backupFileName: String {
-        "\(backupFileBaseName) - \(sanitizedDeviceName).\(backupFileExtension)"
+        "\(datePrefix) - \(backupFileBaseName) - \(sanitizedDeviceName).\(backupFileExtension)"
+    }
+
+    private var datePrefix: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyMMdd"
+        return formatter.string(from: Date())
     }
 
     private var sanitizedDeviceName: String {
@@ -145,7 +152,7 @@ class DataManager {
     func exportData(_ data: LauncherData) -> Bool {
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.json]
-        savePanel.nameFieldStringValue = "My Launchpad Settings - \(sanitizedDeviceName).json"
+        savePanel.nameFieldStringValue = "\(datePrefix) - My Launchpad Settings - \(sanitizedDeviceName).json"
         savePanel.title = "Export Settings"
         savePanel.message = "Choose where to save your launcher settings"
         

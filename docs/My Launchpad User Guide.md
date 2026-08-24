@@ -390,18 +390,20 @@ Keep your settings synced across multiple Macs using cloud storage:
 
 | Setting | Description |
 |---------|-------------|
-| **iCloud** | When enabled, automatically backs up settings to `~/Library/Mobile Documents/com~apple~CloudDocs/My Launchpad/` using a device-specific filename |
-| **OneDrive** | When enabled, automatically backs up settings to `~/Library/CloudStorage/OneDrive-Personal/My Launchpad/` using a device-specific filename |
+| **iCloud** | When enabled, automatically backs up settings to `~/Library/Mobile Documents/com~apple~CloudDocs/My Launchpad/` using a date-prefixed, device-specific filename |
+| **OneDrive** | When enabled, automatically backs up settings to `~/Library/CloudStorage/OneDrive-Personal/My Launchpad/` using a date-prefixed, device-specific filename |
 
 **How Cloud Sync Works:**
 1. Enable one or both cloud backup options in Settings
-2. Your configuration is automatically saved to the cloud whenever you make changes, with a filename that includes your device name
+2. Your configuration is automatically saved to the cloud whenever you make changes, with a filename that begins with `YYMMDD - ` and includes your device name
 3. On another Mac (signed into the same cloud account), open Settings and choose **Import**
 4. Browse to the cloud folder and select the backup file you want to restore
 
 > My Launchpad never prompts you to restore automatically. Restoring cloud settings is always a manual choice you make from Settings.
 
-> **Example filename:** `My Launchpad Backup - Bartbis MacBook Pro.json`
+> **Example filename:** `260824 - My Launchpad Backup - Bartbis MacBook Pro.json`
+
+> **Export default filename:** `260824 - My Launchpad Settings - Bartbis MacBook Pro.json`
 
 > **Tip:** This is perfect for keeping your app organization consistent across a MacBook and desktop Mac!
 
@@ -567,6 +569,7 @@ If an app shows a blank icon:
 ### v1.8.4 (August 2026)
 - Removed the automatic cloud restore prompt that could appear on launch
 - Restoring cloud settings is now a manual action via Settings → Import
+- Backup and export filenames now start with `YYMMDD - ` for easier date-first sorting
 
 ### v1.8.3 (July 2026)
 - Recursive app scanning now detects apps installed in nested folders

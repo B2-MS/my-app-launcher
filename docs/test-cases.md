@@ -40,6 +40,21 @@ This file documents test cases for each feature. Tests are written when features
 **Actual:** App launches directly to the launcher with no restore pop-up. The launch-time discovery/prompt code was removed entirely, so the prompt cannot appear. Manual Import remains available in Settings.
 **Tested:** August 20, 2026
 
+### TC-025: Date-Prefixed Backup and Export Filenames
+**Feature:** Backup file format with date prefix (`YYMMDD - `)
+**Added:** v1.8.4
+**Status:** ✅ Pass
+
+**Steps:**
+1. Open Settings and enable iCloud and/or OneDrive backup
+2. Make a data change (for example, create or rename a group) to trigger save
+3. Check the cloud backup folder filename
+4. Click Export and observe the default filename in the Save dialog
+
+**Expected:** Cloud backup and export default filenames start with `YYMMDD - ` and then the existing name pattern
+**Actual:** Naming format is now `YYMMDD - My Launchpad Backup - <Device>.json` for cloud backups and `YYMMDD - My Launchpad Settings - <Device>.json` for export defaults.
+**Tested:** August 24, 2026
+
 ---
 
 ## Version 1.8.1 Tests
@@ -432,6 +447,7 @@ This file documents test cases for each feature. Tests are written when features
 
 | Version | Tests | Passed | Failed |
 |---------|-------|--------|--------|
+| v1.8.4 | 2 | 2 | 0 |
 | v1.7.0 | 5 | 5 | 0 |
 | v1.6.1 | 1 | 1 | 0 |
 | v1.6.0 | 3 | 3 | 0 |
@@ -439,7 +455,7 @@ This file documents test cases for each feature. Tests are written when features
 | v1.5.8 | 2 | 2 | 0 |
 | v1.5.7 | 1 | 1 | 0 |
 | Core | 3 | 3 | 0 |
-| **Total** | **17** | **17** | **0** |
+| **Total** | **19** | **19** | **0** |
 
 ---
 

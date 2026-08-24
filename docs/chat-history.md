@@ -19,6 +19,30 @@ When making changes to My Launchpad, document the session here with:
 
 ---
 
+## Session: Date-Prefixed Backup Filenames, Rebuild, and Repo Sync (v1.8.4)
+**Date:** August 24, 2026
+
+### Prompts
+1. Requested removal of local installation, refresh with latest release, and launch on the local machine.
+2. Asked for verification that the local build was pulled from the latest GitHub commit.
+3. Requested backup filename format updates to begin with `YYMMDD - `, complete testing, documentation updates per workflow instructions, rebuilds, and push to GitHub.
+
+### Outcomes
+- Verified local repo is fully synced with GitHub (`main` == `origin/main`, ahead/behind 0/0).
+- Updated backup naming format so cloud backup and export default filenames begin with `YYMMDD - `.
+- Ran testing/build workflows and regenerated release artifacts.
+- Updated release and user documentation plus session logs to include the new filename format and current work session.
+
+### Files Modified
+- `Sources/Services/DataManager.swift` — Added date-prefix filename generation and applied to cloud backup and export default naming.
+- `README.md` — Documented `YYMMDD - ` prefix behavior for export and cloud backup filenames.
+- `RELEASE_NOTES.md` — Added v1.8.4 dated backup filename changes.
+- `docs/My Launchpad User Guide.md` — Updated cloud backup section, examples, and version history.
+- `docs/test-cases.md` — Added TC-025 for date-prefixed filenames and corrected summary totals.
+- `docs/prompts-used.md` — Appended this session’s exact prompts and updated summary counts.
+
+---
+
 ## Session: Remove Automatic Cloud Restore Prompt (v1.8.4)
 **Date:** August 20, 2026
 

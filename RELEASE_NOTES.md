@@ -9,6 +9,11 @@
 - **Restore is now manual only** - To restore cloud settings, use **Import** in Settings and select a backup file from your iCloud or OneDrive folder
 - **Cloud backup still automatic** - Saving settings to iCloud/OneDrive continues to work when the toggles are enabled
 
+#### Dated Backup Filenames
+- **Date-prefixed backups** - Backup and export filenames now start with `YYMMDD - ` for easier chronological sorting
+- **Cloud backup example** - `260824 - My Launchpad Backup - Bartbis MacBook Pro.json`
+- **Export backup example** - `260824 - My Launchpad Settings - Bartbis MacBook Pro.json`
+
 ---
 
 ## Version 1.8.3 (July 2026)

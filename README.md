@@ -114,8 +114,9 @@ For the global hotkey to work:
 - **Color** - Customize group header color
 - **Size** - Choose tile size (S/M/L)
 - **Resize Groups** - Right-click a group → Resize Group → Standard/Large/Extra Large
-- **Export** - Save your configuration to a file
+- **Export** - Save your configuration to a file (default filename starts with `YYMMDD - `)
 - **Import** - Restore configuration from a file
+- **Cloud Backup Files** - iCloud/OneDrive backup filenames start with `YYMMDD - ` for date-first sorting
 
 ## File Structure
 
